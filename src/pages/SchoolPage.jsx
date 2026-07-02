@@ -9,6 +9,7 @@ const SIDEBAR_ITEMS = [
   { id: 'infrastructure', label: 'Infrastructure' },
   { id: 'cost', label: 'Net Cost' },
   { id: 'benefit', label: 'Net Benefit' },
+  { id: 'complaint', label: 'Complaint' },
 ]
 
 function scoreBarClass(val) {
@@ -220,6 +221,23 @@ export default function SchoolPage() {
               <div className="rating-bar-wrap"><div className={`rating-bar ${scoreBarClass(school.netBenefit)}`} style={{ width: barAnimated ? `${school.netBenefit}%` : '0%' }}></div></div>
               <span className="text-[13px] font-semibold text-right max-md:text-left" style={{ color: scoreColor(school.netBenefit) }}>{school.netBenefit}</span>
             </div>
+          </div>
+        </div>
+
+        <div className="bg-white border border-slate-200 rounded-xl p-7 animate-slideUp border-l-[3px] border-l-red-500" id="complaint" style={{ animationDelay: '0.25s' }}>
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 bg-red-50 text-red-600">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1C4.134 1 1 4.134 1 8s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7z" stroke="currentColor" strokeWidth="1.3" fill="none"/>
+                <path d="M5.5 6s.5-1.5 2.5-1.5S10.5 6 10.5 6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" fill="none"/>
+                <path d="M4.5 9.5s1 2 3.5 2 3.5-2 3.5-2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" fill="none"/>
+              </svg>
+            </div>
+            <h2 className="text-xl font-bold tracking-tight">Complaint</h2>
+          </div>
+          <p className="text-[13px] text-slate-500 mb-5">Registered complaints and their resolution status for this institution.</p>
+          <div className="flex items-center justify-center py-6 text-sm text-slate-400 font-medium">
+            {school.complaint}
           </div>
         </div>
 

@@ -10,7 +10,7 @@ export default function AboutUs() {
       </div>
 
       <p className="text-sm text-slate-600 leading-relaxed max-w-3xl">
-        Information available for right now
+        Information Unavailable
       </p>
     </div>
   )

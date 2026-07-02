@@ -3,6 +3,7 @@ const METRICS = {
   infrastructure: { label: 'Infrastructure', weight: 0.20, key: 'infrastructure' },
   netCost: { label: 'Net Cost', weight: 0.20, key: 'netCost' },
   netBenefit: { label: 'Net Benefit', weight: 0.30, key: 'netBenefit' },
+  complaint: { label: 'Complaint', weight: 0, key: 'complaint' },
 };
 
 const CATEGORY_MAP = [
@@ -10,6 +11,7 @@ const CATEGORY_MAP = [
   { key: 'infrastructure', label: 'Infrastructure', metrics: ['infrastructure'] },
   { key: 'cost', label: 'Net Cost', metrics: ['netCost'] },
   { key: 'benefit', label: 'Net Benefit', metrics: ['netBenefit'] },
+  { key: 'complaint', label: 'Complaint', metrics: ['complaint'] },
 ];
 
 function computeNetCost(school) {
@@ -20,7 +22,7 @@ function computeNetCost(school) {
 function computeOverallScore(school) {
   let score = 0;
   for (const m of Object.values(METRICS)) {
-    const val = m.key === 'netCost' ? computeNetCost(school) : (school[m.key] || 0);
+    const val = m.key === 'netCost' ? computeNetCost(school) : (typeof school[m.key] === 'number' ? school[m.key] : 0);
     score += (m.key === 'netCost' ? (100 - val) : val) * m.weight;
   }
   return Math.round(score * 10) / 10;
@@ -29,7 +31,7 @@ function computeOverallScore(school) {
 function computeCategoryScores(school) {
   const cats = {};
   for (const cat of CATEGORY_MAP) {
-    const vals = cat.metrics.map(m => m === 'netCost' ? computeNetCost(school) : (school[m] || 0));
+    const vals = cat.metrics.map(m => m === 'netCost' ? computeNetCost(school) : (typeof school[m] === 'number' ? school[m] : 0));
     cats[cat.key] = Math.round(vals.reduce((a, b) => a + b, 0) / vals.length * 10) / 10;
   }
   return cats;
@@ -58,6 +60,7 @@ const schoolsData = [
     schoolEnvironment: 80,
     infrastructure: 77,
     netBenefit: 73,
+    complaint: 'Information Unavailable',
     admissionFee: 105000,
     monthlyFee: 35000,
     annualFee: 420000,
@@ -75,6 +78,7 @@ const schoolsData = [
     schoolEnvironment: 62,
     infrastructure: 68,
     netBenefit: 74,
+    complaint: 'Information Unavailable',
     admissionFee: 36468,
     monthlyFee: 12156,
     annualFee: 145872,
@@ -92,6 +96,7 @@ const schoolsData = [
     schoolEnvironment: 63,
     infrastructure: 45,
     netBenefit: 85,
+    complaint: 'Information Unavailable',
     admissionFee: 66000,
     monthlyFee: 22000,
     annualFee: 264000,
@@ -109,6 +114,7 @@ const schoolsData = [
     schoolEnvironment: 72,
     infrastructure: 48,
     netBenefit: 65,
+    complaint: 'Information Unavailable',
     admissionFee: 170001,
     monthlyFee: 56667,
     annualFee: 680004,
@@ -126,6 +132,7 @@ const schoolsData = [
     schoolEnvironment: 68,
     infrastructure: 46,
     netBenefit: 38,
+    complaint: 'Information Unavailable',
     admissionFee: 39501,
     monthlyFee: 13167,
     annualFee: 158004,
@@ -143,6 +150,7 @@ const schoolsData = [
     schoolEnvironment: 62.4,
     infrastructure: 75,
     netBenefit: 70,
+    complaint: 'Information Unavailable',
     cost: 85,
     admissionFee: 200000,
     monthlyFee: 50000,
@@ -161,6 +169,7 @@ const schoolsData = [
     schoolEnvironment: 27.6,
     infrastructure: 35,
     netBenefit: 45,
+    complaint: 'Information Unavailable',
     cost: 15,
     admissionFee: 20000,
     monthlyFee: 8000,
