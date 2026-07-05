@@ -49,7 +49,7 @@ export default function SchoolCard({ school, activeMetric, onMetricChange }) {
             {school.logoInitials}
           </div>
           <div>
-            <div className="text-base font-semibold text-slate-900 leading-tight">{school.name}</div>
+            <div className="text-base font-semibold text-slate-900 leading-tight">{school.name} ({school.shortName})</div>
             <div className="text-[13px] text-slate-500">{school.location}</div>
           </div>
         </div>

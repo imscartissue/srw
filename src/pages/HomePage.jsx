@@ -107,7 +107,7 @@ export default function HomePage() {
                       <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-[11px] shrink-0" style={{ backgroundColor: s.logoColor }}>
                         {s.logoInitials}
                       </div>
-                      {s.name}
+                      {s.name} ({s.shortName})
                     </div>
                   </td>
                   <td className="px-4 py-3 border-b border-slate-100 text-slate-700">{s.location}</td>
