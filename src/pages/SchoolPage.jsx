@@ -184,23 +184,15 @@ export default function SchoolPage() {
                 <circle cx="8" cy="10" r="1.5" fill="currentColor"/>
               </svg>
             </div>
-            <h2 className="text-xl font-bold tracking-tight">Net Cost — Fee Structure</h2>
+            <h2 className="text-xl font-bold tracking-tight">Net Cost</h2>
           </div>
-          <p className="text-[13px] text-slate-500 mb-5">Detailed fee breakdown for the school. All amounts are in Nepalese Rupees (NRS).</p>
-          <div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
-            {[
-              { label: 'Admission Fee', value: school.admissionFee, note: 'One-time payment at enrollment' },
-              { label: 'Monthly Fee', value: school.monthlyFee, note: 'Per month tuition' },
-              { label: 'Annual Fee', value: school.annualFee, note: 'Total yearly cost' },
-            ].map((item, i) => (
-              <div key={item.label}
-                className="border border-slate-200 rounded-xl p-6 text-center bg-slate-50 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:border-slate-300 animate-slideUp"
-                style={{ animationDelay: `${0.05 + i * 0.05}s` }}>
-                <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">{item.label}</div>
-                <div className="text-[22px] font-bold text-slate-900 mb-1.5">NRS {item.value?.toLocaleString()}</div>
-                <div className="text-xs text-slate-400">{item.note}</div>
-              </div>
-            ))}
+          <p className="text-[13px] text-slate-500 mb-5">Overall cost rating for the school. Lower scores are better.</p>
+          <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-[160px_1fr_40px] gap-3 items-center max-md:grid-cols-1 max-md:gap-1">
+              <div className="text-[13px] text-slate-600 font-medium">Cost Score</div>
+              <div className="rating-bar-wrap"><div className={`rating-bar ${scoreBarClass(school.cost)}`} style={{ width: barAnimated ? `${school.cost}%` : '0%' }}></div></div>
+              <span className="text-[13px] font-semibold text-right max-md:text-left" style={{ color: scoreColor(school.cost) }}>{school.cost}</span>
+            </div>
           </div>
         </div>
 

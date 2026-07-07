@@ -114,7 +114,7 @@ export default function HomePage() {
                   <td className="px-4 py-3 border-b border-slate-100 text-slate-700">{s.gradeRange}</td>
                   <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.schoolEnvironment) }}>{s.schoolEnvironment}</td>
                   <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.infrastructure) }}>{s.infrastructure}</td>
-                  <td className="px-4 py-3 border-b border-slate-100 font-semibold">NRS {s.annualFee?.toLocaleString()}</td>
+                  <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.netCost) }}>{s.netCost}</td>
                   <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.netBenefit) }}>{s.netBenefit}</td>
                   <td className="px-4 py-3 border-b border-slate-100"><strong style={{ color: scoreColor(s.overallScore) }}>{s.overallScore}</strong></td>
                 </tr>
