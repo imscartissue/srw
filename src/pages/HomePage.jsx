@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import schoolsData, { rankSchools } from '../data/schoolsData.js'
 import TopBar from '../components/HomePage/TopBar.jsx'
 import SchoolCard from '../components/HomePage/SchoolCard.jsx'
+import RedFlagView from '../components/HomePage/RedFlagView.jsx'
 import BackToTop from '../components/BackToTop.jsx'
 
 function scoreColor(val) {
@@ -21,7 +22,8 @@ export default function HomePage() {
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState('rank')
   const [activeMetric, setActiveMetric] = useState('environment')
-  const [viewMode, setViewMode] = useState('quick')
+  const [viewMode, setViewMode] = useState('normal')
+  const [subViewMode, setSubViewMode] = useState('quick')
 
   const ranked = useMemo(() => rankSchools(schoolsData), [])
 
@@ -56,6 +58,8 @@ export default function HomePage() {
       <TopBar
         viewMode={viewMode}
         onViewModeChange={setViewMode}
+        subViewMode={subViewMode}
+        onSubViewModeChange={setSubViewMode}
         search={search}
         onSearchChange={setSearch}
         sort={sort}
@@ -70,58 +74,62 @@ export default function HomePage() {
         Data collected from anonymous student surveys.
       </div>
 
-      {viewMode === 'quick' ? (
-        filtered.map(school => (
-          <SchoolCard
-            key={school.id}
-            school={school}
-            activeMetric={activeMetric}
-            onMetricChange={setActiveMetric}
-          />
-        ))
-      ) : (
-        <div className="bg-white border border-slate-200 rounded-xl overflow-x-auto">
-          <table className="w-full border-collapse text-[13px]">
-            <thead>
-              <tr>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Rank</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">School</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Location</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Grades</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">School Env.</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Infrastructure</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Net Cost</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Net Benefit</th>
-                <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Overall</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map(s => (
-                <tr key={s.id} className="cursor-pointer transition-colors duration-150 hover:bg-slate-100 active:bg-slate-200"
-                  onClick={() => window.location.hash = `/school/${s.id}`}>
-                  <td className="px-4 py-3 border-b border-slate-100">
-                    <span className={`font-semibold ${rankMedalClass(s.rank)} ${s.rank <= 3 ? 'animate-pulse-slow' : 'text-slate-500'}`}>#{s.rank}</span>
-                  </td>
-                  <td className="px-4 py-3 border-b border-slate-100 text-slate-700">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-[11px] shrink-0" style={{ backgroundColor: s.logoColor }}>
-                        {s.logoInitials}
-                      </div>
-                      {s.name} ({s.shortName})
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 border-b border-slate-100 text-slate-700">{s.location}</td>
-                  <td className="px-4 py-3 border-b border-slate-100 text-slate-700">{s.gradeRange}</td>
-                  <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.schoolEnvironment) }}>{s.schoolEnvironment}</td>
-                  <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.infrastructure) }}>{s.infrastructure}</td>
-                  <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.netCost) }}>{s.netCost}</td>
-                  <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.netBenefit) }}>{s.netBenefit}</td>
-                  <td className="px-4 py-3 border-b border-slate-100"><strong style={{ color: scoreColor(s.overallScore) }}>{s.overallScore}</strong></td>
+      {viewMode === 'normal' ? (
+        subViewMode === 'quick' ? (
+          filtered.map(school => (
+            <SchoolCard
+              key={school.id}
+              school={school}
+              activeMetric={activeMetric}
+              onMetricChange={setActiveMetric}
+            />
+          ))
+        ) : (
+          <div className="bg-white border border-slate-200 rounded-xl overflow-x-auto">
+            <table className="w-full border-collapse text-[13px]">
+              <thead>
+                <tr>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Rank</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">School</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Location</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Grades</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">School Env.</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Infrastructure</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Net Cost</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Net Benefit</th>
+                  <th className="text-left px-4 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200 sticky top-0 z-10">Overall</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map(s => (
+                  <tr key={s.id} className="cursor-pointer transition-colors duration-150 hover:bg-slate-100 active:bg-slate-200"
+                    onClick={() => window.location.hash = `/school/${s.id}`}>
+                    <td className="px-4 py-3 border-b border-slate-100">
+                      <span className={`font-semibold ${rankMedalClass(s.rank)} ${s.rank <= 3 ? 'animate-pulse-slow' : 'text-slate-500'}`}>#{s.rank}</span>
+                    </td>
+                    <td className="px-4 py-3 border-b border-slate-100 text-slate-700">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-[11px] shrink-0" style={{ backgroundColor: s.logoColor }}>
+                          {s.logoInitials}
+                        </div>
+                        {s.name} ({s.shortName})
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 border-b border-slate-100 text-slate-700">{s.location}</td>
+                    <td className="px-4 py-3 border-b border-slate-100 text-slate-700">{s.gradeRange}</td>
+                    <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.schoolEnvironment) }}>{s.schoolEnvironment}</td>
+                    <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.infrastructure) }}>{s.infrastructure}</td>
+                    <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.netCost) }}>{s.netCost}</td>
+                    <td className="px-4 py-3 border-b border-slate-100 font-semibold" style={{ color: scoreColor(s.netBenefit) }}>{s.netBenefit}</td>
+                    <td className="px-4 py-3 border-b border-slate-100"><strong style={{ color: scoreColor(s.overallScore) }}>{s.overallScore}</strong></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )
+      ) : (
+        <RedFlagView />
       )}
 
       {filtered.length === 0 && (
